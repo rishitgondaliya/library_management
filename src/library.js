@@ -2,22 +2,28 @@ const Book = require("./book");
 
 class Library {
   constructor() {
-    this.books = [];
+    // initially there no books
+    this.books = []; 
   }
 
+  // add book feature
   addBook(book) {
+    // check if book already exists in the library
     const existingBook = this.books.find((b) => b.isbn === book.isbn);
     if (existingBook) {
+      // update existing book count
       existingBook.isAvailable += book.isAvailable;
       console.log(
         `Added ${book.isAvailable} more copies to the existing book.`
       );
     } else {
+      // added new book
       this.books.push(book);
       console.log("Book added successfully.");
     }
   }
 
+  // view all available books
   viewAvailableBooks() {
     let availableBooks = this.books.filter((book) => book.isAvailable > 0);
     if (availableBooks.length > 0) {
@@ -25,35 +31,6 @@ class Library {
     } else {
       console.log("There are no books available now!");
     }
-  }
-
-  viewBookAvailability(isbn) {
-    const book = this.books.find((b) => b.isbn === isbn);
-    if (book) {
-      console.log(book.toString());
-    } else {
-      console.log("Book not found.");
-    }
-  }
-
-  borrowBook(isbn, copies) {
-    const book = this.books.find((b) => b.isbn === isbn);
-    if (!book || book.isAvailable < copies) {
-      console.log("Not enough copies available or book is not available.");
-      return;
-    }
-    book.isAvailable -= copies;
-    console.log(`You have borrowed ${copies} copies of the book.`);
-  }
-
-  returnBook(isbn, copies) {
-    const book = this.books.find((b) => b.isbn === isbn);
-    if (!book) {
-      console.log("Book not found.");
-      return;
-    }
-    book.isAvailable += copies;
-    console.log(`You have returned ${copies} copies of the book.`);
   }
 }
 
