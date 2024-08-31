@@ -8,7 +8,7 @@ class Book {
     }
 
     toString() {
-        return `ISBN: ${this.isbn}, Title: ${this.title}, Author: ${this.author}, Year: ${this.year}, Available copies: ${this.isAvailable}`;
+        return `ISBN: ${this.isbn}\nTitle: ${this.title}\nAuthor: ${this.author}\nYear: ${this.year}\nAvailable copies: ${this.isAvailable}`;
     }
 }
 
