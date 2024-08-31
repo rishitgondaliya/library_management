@@ -23,7 +23,7 @@ class Library {
     }
   }
 
-  // view all available books
+  // view all available books feature
   viewAvailableBooks() {
     let availableBooks = this.books.filter((book) => book.isAvailable > 0);
     if (availableBooks.length > 0) {
@@ -31,6 +31,20 @@ class Library {
     } else {
       console.log("There are no books available now!");
     }
+  }
+
+  // borrow books feature
+  borrowBook(isbn, copies) {
+    const book = this.books.find((b) => b.isbn === isbn);
+    // book not available or demand count is greater than available
+    if (!book || book.isAvailable < copies) {
+      console.log("Not enough copies available or book is not available.");
+      return;
+    }
+
+    // update available count
+    book.isAvailable -= copies;
+    console.log(`You have borrowed ${copies} copies of the book.`);
   }
 }
 
