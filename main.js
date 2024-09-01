@@ -7,13 +7,13 @@ let exit = false;
 
 // Add initial books
 const initialBooks = [
-  new Book('12345', 'The Great Gatsby', 'F. Scott Fitzgerald', 1925, 5),
-  new Book('67890', 'To Kill a Mockingbird', 'Harper Lee', 1960, 3),
-  new Book('11121', '1984', 'George Orwell', 1949, 4),
-  new Book('13141', 'The Catcher in the Rye', 'J.D. Salinger', 1951, 2),
+  new Book("12345", "The Great Gatsby", "F. Scott Fitzgerald", 1925, 5),
+  new Book("67890", "To Kill a Mockingbird", "Harper Lee", 1960, 3),
+  new Book("11121", "1984", "George Orwell", 1949, 4),
+  new Book("13141", "The Catcher in the Rye", "J.D. Salinger", 1951, 2),
 ];
 
-initialBooks.forEach(book => library.addBook(book));
+initialBooks.forEach((book) => library.addBook(book));
 
 // Function to get valid ISBN
 const getValidIsbn = () => {
@@ -31,7 +31,9 @@ const getValidIsbn = () => {
 const validateYear = (year) => {
   const currentYear = new Date().getFullYear();
   while (year > currentYear) {
-    console.log("Publication year cannot be in the future. Please enter a valid year.");
+    console.log(
+      "Publication year cannot be in the future. Please enter a valid year."
+    );
     year = parseInt(readlineSync.question("Enter Publication Year: "));
   }
   return year;
@@ -49,13 +51,27 @@ while (!exit) {
   switch (choice) {
     case "1":
       const isbn = getValidIsbn();
-      const title = readlineSync.question("Enter Title: ");
-      const author = readlineSync.question("Enter Author: ");
-      let year = parseInt(readlineSync.question("Enter Publication Year: "));
-      year = validateYear(year);
-      const copies = parseInt(readlineSync.question("Enter number of copies: "));
-      const book = new Book(isbn, title, author, year, copies);
-      library.addBook(book);
+      const existingBook = library.books.find((book) => book.isbn === isbn);
+
+      if (existingBook) {
+        const additionalCopies = parseInt(
+          readlineSync.question(
+            "This book already exists. How many copies would you like to add? "
+          )
+        );
+        existingBook.isAvailable += additionalCopies;
+        console.log(`${additionalCopies} copies added to the existing book.`);
+      } else {
+        const title = readlineSync.question("Enter Title: ");
+        const author = readlineSync.question("Enter Author: ");
+        let year = parseInt(readlineSync.question("Enter Publication Year: "));
+        year = validateYear(year);
+        const copies = parseInt(
+          readlineSync.question("Enter number of copies: ")
+        );
+        const book = new Book(isbn, title, author, year, copies);
+        library.addBook(book);
+      }
       break;
 
     case "2":
@@ -66,13 +82,17 @@ while (!exit) {
 
     case "3":
       const borrowIsbn = getValidIsbn();
-      const count = parseInt(readlineSync.question("How many copies do you want? "));
+      const count = parseInt(
+        readlineSync.question("How many copies do you want? ")
+      );
       library.borrowBook(borrowIsbn, count);
       break;
 
     case "4":
       const returnIsbn = getValidIsbn();
-      const returnCount = parseInt(readlineSync.question("How many copies do you want to return? "));
+      const returnCount = parseInt(
+        readlineSync.question("How many copies do you want to return? ")
+      );
       library.returnBook(returnIsbn, returnCount);
       break;
 
