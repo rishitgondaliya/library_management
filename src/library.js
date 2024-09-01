@@ -46,6 +46,19 @@ class Library {
     book.isAvailable -= copies;
     console.log(`You have borrowed ${copies} copies of the book.`);
   }
+
+  // return borrowed book
+  returnBook(isbn, copies) {
+    const book = this.books.find((b) => b.isbn === isbn);
+    // return existing book
+    if (!book) {
+      console.log("Book not found.");
+      return;
+    }
+    // update count after returning
+    book.isAvailable += copies;
+    console.log(`You have returned ${copies} copies of the book.`);
+  }
 }
 
 module.exports = Library;
